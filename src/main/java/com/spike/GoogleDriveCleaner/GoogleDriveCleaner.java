@@ -11,12 +11,7 @@ public class GoogleDriveCleaner {
 	}
 	
 	public void start() {
-		/*
-		List<File> files = getSubDir(new File("D:\\GoogleDrive"));
-		for(File f : files) {
-			System.out.println(f.getAbsolutePath());
-		}
-		*/
+		
 		ArrayList<File> files = this.find(new File("D:\\GoogleDrive"), "(1)");
 	}
 	
@@ -24,7 +19,7 @@ public class GoogleDriveCleaner {
 		
 		ArrayList<File> files = new ArrayList<File>();
 		
-		
+		//Queue<File> filesQueue = new Queue<File>();
 		
 		return new ArrayList<File>();
 	}
