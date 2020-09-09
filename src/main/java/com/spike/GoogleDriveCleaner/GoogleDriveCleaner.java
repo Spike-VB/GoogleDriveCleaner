@@ -11,17 +11,37 @@ public class GoogleDriveCleaner {
 	}
 	
 	public void start() {
-		
 		ArrayList<File> files = this.find(new File("D:\\GoogleDrive"), "(1)");
+		
+		for(File f : files) {
+			System.out.println(f.getPath());
+		}
 	}
 	
 	private ArrayList<File> find(File dir, String namePart) {
 		
 		ArrayList<File> files = new ArrayList<File>();
 		
-		//Queue<File> filesQueue = new Queue<File>();
+		LinkedList<File> dirQueue = new LinkedList<File>();
+		dirQueue.add(dir);
 		
-		return new ArrayList<File>();
+		while(!dirQueue.isEmpty()) {
+			File currentDir = dirQueue.poll();
+			List<File> dirList = this.getSubDir(currentDir);
+			
+			for(File f : dirList) {
+				dirQueue.add(f);
+			}
+			
+			List<File> fileList = this.getFiles(currentDir);
+			
+			for(File f : fileList) {
+				f.getPath().contains(namePart);
+				files.add(f);
+			}
+		}
+		
+		return files;
 	}
 	
 	private List<File> getFiles(File directory) {
