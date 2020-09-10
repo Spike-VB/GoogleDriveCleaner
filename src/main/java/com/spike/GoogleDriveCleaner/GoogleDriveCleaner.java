@@ -12,19 +12,21 @@ public class GoogleDriveCleaner {
 	
 	private void start() {
 		String[] excludeDir = {
-				"D:\\GoogleDrive\\eclipse",
+				//"D:\\GoogleDrive\\eclipse",
 				//"D:\\GoogleDrive\\Java",
-				"D:\\GoogleDrive\\Java\\eclipse"
+				//"D:\\GoogleDrive\\Java\\eclipse"
 				};
 		List<String> excludeDirList = Arrays.asList(excludeDir);
 		excludeDir = null;
 		
-		LinkedList<File> files = this.find(new File("D:\\GoogleDrive"), "(1)", excludeDirList);
-		this.printFindResults(files);
+		LinkedList<File> files = this.findFiles(new File("D:\\GoogleDrive"), "(1)", excludeDirList);
+		LinkedList<File> dirs = this.findDirs(new File("D:\\GoogleDrive"), "(1)", excludeDirList);
+		//this.printFindResults(files);
+		this.printFindResults(dirs);
 		//this.delete(files);
 	}
 	
-	public LinkedList<File> find(File startDir, String namePart, List<String> excludeDir) {
+	public LinkedList<File> findFiles(File startDir, String namePart, List<String> excludeDir) {
 		
 		LinkedList<File> files = new LinkedList<File>();
 		
@@ -51,6 +53,32 @@ public class GoogleDriveCleaner {
 		}
 		
 		return files;
+	}
+	
+	public LinkedList<File> findDirs(File startDir, String namePart, List<String> excludeDir) {
+		
+		LinkedList<File> dirs = new LinkedList<File>();
+		
+		LinkedList<File> dirQueue = new LinkedList<File>();
+		dirQueue.add(startDir);
+		
+		while(!dirQueue.isEmpty()) {
+			File currentDir = dirQueue.poll();
+			List<File> dirList = this.getSubDir(currentDir);
+			
+			for(File d : dirList) {
+				if(!excludeDir.contains(d.getPath())) {
+					if(!d.getPath().contains(namePart)) {
+						dirQueue.add(d);
+					}
+					else {
+						dirs.add(d);
+					}
+				}
+			}
+		}
+		
+		return dirs;
 	}
 	
 	public void delete(LinkedList<File> files) {
